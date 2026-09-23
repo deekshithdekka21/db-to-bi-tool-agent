@@ -40,3 +40,55 @@ official documentation and confirmed by an actual working end-to-end run.
 All three tools were tested against the same synthetic dataset (300 users,
 ~780 orders, ~430 support tickets) and each independently returned the same
 ground-truth query result:
+
+```
+SELECT plan, COUNT(*) FROM users GROUP BY plan;
+-- free: 203, pro: 82, enterprise: 15
+```
+
+Getting an identical result from three completely independent tools and
+setup processes is the actual proof this works — not just that each tool's
+UI loaded.
+
+## Real debugging along the way
+
+- Caught a missing requirement in the original setup instructions:
+self-managed Redash deployments need `REDASH_SECRET_KEY` and
+`REDASH_COOKIE_SECRET` explicitly generated, per Redash's official docs —
+this wasn't obvious from community setup guides alone.
+- Fixed a case where the agent's first attempt at adding a Redash data
+source failed because a startup script mis-parsed a data source name
+containing spaces; it diagnosed the cause and retried using Redash's CLI
+tool directly.
+- Verified container provenance directly (which `docker-compose.yml` each
+running container actually started from) after a leftover file from an
+earlier test was found sitting in a test folder, to confirm test results
+weren't accidentally validating stale infrastructure.
+
+## Files
+
+- **`db-to-bi-tool-skill.md`** — the core instructions: how to detect a
+data file, and the exact setup sequence for each of the three tools
+- **`.claude/skills/setup-bi/SKILL.md`** — a Claude Code Skill that wraps
+the above into a single `/setup-bi` command, with interactive prompts
+instead of a long typed instruction each time
+
+## Setup
+
+Before running `/setup-bi`, you'll need Claude Code installed and connected to your Claude account:
+
+1. Install the **Claude Code** extension in VS Code (or use the Claude Code CLI directly in your terminal).
+2. Open the integrated terminal in VS Code and run `claude` to authenticate — this connects your Claude account and opens the Claude Code session.
+3. Navigate to a folder containing your data file (`.sql`, `.csv`, or `.db`).
+4. Run `/setup-bi` inside that Claude Code session.
+
+## Usage
+
+```
+# In a folder containing your .sql / .csv / .db file:
+claude
+> /setup-bi
+```
+
+It will find your data file, ask which tool you want, and take it from
+there.
