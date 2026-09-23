@@ -37,18 +37,19 @@ official documentation and confirmed by an actual working end-to-end run.
 
 ## Verification
 
-All three tools were tested against the same synthetic dataset (300 users,
-~780 orders, ~430 support tickets) and each independently returned the same
-ground-truth query result:
+To prove the setup actually works (not just that containers start), all three
+tools were tested against the same synthetic dataset during development, and
+each independently returned matching results for the same query run against
+their own connection to that data.
 
-```
-SELECT plan, COUNT(*) FROM users GROUP BY plan;
--- free: 203, pro: 82, enterprise: 15
-```
-
-Getting an identical result from three completely independent tools and
-setup processes is the actual proof this works — not just that each tool's
-UI loaded.
+If you're using this with your own data file, you can verify your setup the
+same way: run any query you already know the answer to (e.g. a row count or
+a `GROUP BY` on a column you recognize) directly in the BI tool's query
+interface, and confirm it matches what you'd expect from the source file
+itself. If you test with more than one tool, running the identical query in
+each and confirming they return the same result is a good sanity check that
+every tool is actually connected to the same underlying data, not just that
+its UI loaded successfully.
 
 ## Real debugging along the way
 
