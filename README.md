@@ -78,8 +78,8 @@ instead of a long typed instruction each time
 Before running `/setup-bi`, you'll need Claude Code installed and connected to your Claude account:
 
 1. Install the **Claude Code** extension in VS Code (or use the Claude Code CLI directly in your terminal).
-2. Open the integrated terminal in VS Code and run `claude` to authenticate — this connects your Claude account and opens the Claude Code session.
-3. Navigate to a folder containing your data file (`.sql`, `.csv`, or `.db`).
+2. In your terminal, navigate to the folder containing your data file (`.sql`, `.csv`, or `.db`), e.g. `cd path/to/your/folder`.
+3. From inside that folder, run `claude` to authenticate — this connects your Claude account and opens a Claude Code session with that folder as its working directory.
 4. Run `/setup-bi` inside that Claude Code session.
 
 ## Usage
